@@ -1,0 +1,34 @@
+@page "/Employees"
+@using EmployeeAppDemo.Services
+@using EmployeeAppDemo.Data
+@using EmployeeAppDemo.Models
+@inject EmployeeService EmployeeService
+
+<PageTitle>Employees</PageTitle>
+
+<h1>Employees</h1>
+
+<p>List of employees.</p>
+
+@if (EmpList != null)
+{
+    foreach (var emp in EmpList)
+    {
+        <p>@emp.DisplayName | @emp.EmployeeNumber</p>
+    }
+}
+else
+{
+    <p>Loading employees...</p>
+}
+
+@code {
+    private List<Employee> EmpList = new();
+    private bool IsLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EmpList = await EmployeeService.GetEmployeesAsync();
+        IsLoading = false;
+    }
+}
